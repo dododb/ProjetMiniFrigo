@@ -1,5 +1,7 @@
 package Controller;
 
+import ArduinoCommunication.Arduino;
+import ArduinoCommunication.IArduino;
 import Model.IModel;
 import Model.Model;
 import View.IView;
@@ -9,8 +11,10 @@ public class Controller implements IController {
 
 	IModel model;
 	IView view;
+	IArduino arduino;
 	public Controller()
 	{
+		this.arduino = new Arduino();
 		this.model = new Model();
 		this.view = new View(model);
 		this.model.AddObserver(this.view);
@@ -21,9 +25,19 @@ public class Controller implements IController {
 		for(int i = 0; i<10;i++)
 		{
 			this.model.setText("blabla");
-			this.model.NotifyObserver();;
+			this.model.NotifyObserver();
 			Thread.sleep(1000);
 		}
+	}
+	
+	public void GetDataFromArduino()
+	{
+		
+	}
+	
+	public void SendDataToArduino()
+	{
+		
 	}
 	
 }
