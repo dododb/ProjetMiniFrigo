@@ -16,7 +16,7 @@ public class Arduino implements SerialPortEventListener, IArduino{
 	CommPortIdentifier serialPortId;
 	Enumeration enumComm;
 	/** The port we’re normally going to use. */
-	private String portName = "COM5";
+	private String portName = "";
 
 	private BufferedReader input;
 	private OutputStream output;
@@ -25,7 +25,7 @@ public class Arduino implements SerialPortEventListener, IArduino{
 	
 	private String readedValue = "";
 
-	public void Arduino()
+	public Arduino()
 	{
 		enumComm = CommPortIdentifier.getPortIdentifiers();
 		this.getPort();
