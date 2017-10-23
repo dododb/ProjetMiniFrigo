@@ -17,6 +17,8 @@ public class View implements IView {
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		System.out.println(this.model.getText());
+		
+		
 	}
 	
 	public Observer GetObserver()
