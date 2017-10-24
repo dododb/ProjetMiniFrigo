@@ -76,11 +76,13 @@ public class Arduino2 {
 		Scanner in = new Scanner(comPort.getInputStream());
 		try
 		{
+			String a = "";
 		   while(in.hasNext())
 			   
-		      out += (in.next()+"\n");
+		     a = in.next();
 		   //System.out.print(out);
 		   	in.close();
+		   	return a;
 		} catch (Exception e) { e.printStackTrace(); }
 		return out;
 	}
