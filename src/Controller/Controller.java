@@ -3,6 +3,7 @@ package Controller;
 import ArduinoCommunication.Arduino2;
 import Model.IModel;
 import Model.Model;
+import Ordre.Order;
 import View.IView;
 import View.View;
 import arduino.Arduino;
@@ -22,15 +23,18 @@ public class Controller implements IController {
 	
 	public void run() throws InterruptedException
 	{
-		for(int j = 0; j<20;j++)
+		for(int j = 1; j<4;j++)
 		for(int i = 0; i<20;i++)
 		{
 			//this.model.setText(arduino.getReadedValue());
 			int a = 1;
 			a >>= 7;
-			this.arduino.serialWrite((i*10));
+			int[] o = { i*j };
+			this.arduino.serialWrite(Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
+			Thread.sleep(1000);
+			System.out.println(this.arduino.serialRead());
 			//this.model.setText(this.arduino.serialRead());
-			this.model.NotifyObserver();
+			//this.model.NotifyObserver();
 			//this.model.setText(this.arduino.serialRead());
 			Thread.sleep(1000);
 		}
