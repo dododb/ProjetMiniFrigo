@@ -30,6 +30,7 @@ public class Controller implements IController {
 			int a = 1;
 			a >>= 7;
 			int[] o = { i*j };
+			//System.out.println("envoie : " + Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
 			this.arduino.serialWrite(Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
 			Thread.sleep(1000);
 			System.out.println(this.arduino.serialRead());
