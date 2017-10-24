@@ -26,10 +26,16 @@ public class Arduino2 {
 	public Arduino2(String portDescription, int baud_rate) {
 		//preferred constructor
 		this.portDescription = portDescription;
-		int i = 0;
-		while((comPort = SerialPort.getCommPorts()[i++]) == null);
+		int i = 1;
 		comPort = SerialPort.getCommPorts()[0];
 		comPort.openPort();
+		while(comPort.getOutputStream() == null) 
+		{
+			System.out.println(SerialPort.getCommPorts()[i]);
+			comPort = SerialPort.getCommPorts()[i++];
+			comPort.openPort();
+		}
+		
 		this.baud_rate = baud_rate;
 		comPort.setBaudRate(this.baud_rate);
 	}
