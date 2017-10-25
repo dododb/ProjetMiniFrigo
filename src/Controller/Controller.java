@@ -25,10 +25,10 @@ public class Controller implements IController {
 	{
 		while(true)
 		{
+			//System.out.println(this.model.GettempConsigne().GetDegreeF());
 			int[] o = { (int) this.model.GettempConsigne().GetDegreeF(), 1 };
 			//System.out.println("envoie : " + Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
 			this.arduino.serialWrite(Order.OrdreToSend(o));
-			Thread.sleep(1000);
 			String reception = this.arduino.serialRead();
 			this.model.TranslateDataFromArduino(reception);
 			this.model.NotifyObserver();
