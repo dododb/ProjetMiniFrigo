@@ -1,5 +1,6 @@
 #include "PID_v1.h"
 
+<<<<<<< HEAD
 int a = 0;
 
 String returnOrder;
@@ -96,6 +97,60 @@ void StandBy(){
 
 
 // Fonction qui calcule le PID
+=======
+int pin = 13;
+int ledPin = 6;
+int a = 0;
+
+const int NUMBER_OF_TRAME = 2;
+const int TRAME_INDEX[] = { 6, 0 };
+
+double Setpoint, Input, Output;
+PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(pin, INPUT);
+  //Setpoint = 18;
+  //myPID.SetMode(AUTOMATIC);
+  delay(10000);
+}
+
+void loop() {
+int receiveTrames[2];
+  if (Serial.available()) {
+    a = Serial.read();
+  }
+  getOrder(receiveTrames, a);
+  //Serial.println(a);
+  delay(1000);
+
+  Send(receiveTrames[0], receiveTrames[1], a);
+
+  delay(1000);
+}
+
+void Send(int data1, int data2, int data3) {
+  Serial.print(data1);
+  Serial.print(": caca");
+  Serial.print(data2);
+  Serial.print(":");
+  Serial.println(data3);
+}
+
+bool getOrder(int* trames, int trame)
+{
+    int ordreType = trame >> TRAME_INDEX[0];
+    trame -= ordreType << TRAME_INDEX[0];
+  
+    int ordre = trame >> TRAME_INDEX[2];
+  
+    trames[0] = ordreType;
+    trames[1] = ordre;
+    return true;
+}
+
+>>>>>>> branch 'master' of https://github.com/dododb/ProjetMiniFrigo
 void funcPID()
 {
   Input = analogRead(1);

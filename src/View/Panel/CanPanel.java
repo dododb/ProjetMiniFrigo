@@ -10,6 +10,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import Controller.IController;
+import Model.IModel;
 import View.IView;
 
 public class CanPanel extends JPanel implements MouseListener{
@@ -17,63 +19,36 @@ public class CanPanel extends JPanel implements MouseListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String pathFile;
-	private Image img1;
-	private Image img2;
-	private Boolean status;
+	private IModel model;
+	private IController controller;
 	
-	public CanPanel(Boolean p_status)
+	public CanPanel(IModel model, IController controller)
 	{
-		this.pathFile = "D:/Exia CESI/A3/Projet/Projet PMF/can";
-		this.status = p_status;
-		
-        addMouseListener(this);
-		try 
-		{
-			this.img1 = ImageIO.read(new File(this.pathFile + "1.png"));
-			this.img2 = ImageIO.read(new File(this.pathFile + "2.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		this.addMouseListener(this);
+        this.model = model;
+        this.controller = controller;
 	}
 	
 
 	public void paintComponent(Graphics g){
-		if(this.status)	g.drawImage(this.img1, 0, 0, this.getWidth(), this.getHeight(), this);
-		else g.drawImage(this.img2, 0, 0, this.getWidth(), this.getHeight(), this);
-
+		g.drawImage(this.model.GetCan().GetCan(), 0, 0, this.getWidth(), this.getHeight(), this);
 	}
+
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		this.controller.ClickCan();
 	}
-
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 }

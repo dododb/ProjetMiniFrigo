@@ -2,6 +2,8 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,13 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import Controller.IController;
 import Model.IModel;
 import View.Panel.CanPanel;
 import View.Panel.ConsigneChangePanel;
 import View.Panel.ModePanel;
 import View.Panel.TemperaturePanel;
 
-public class View extends JFrame implements IView{
+public class View extends JFrame implements IView {
 	JSplitPane stage1;
 	JPanel consigneT;
 	JPanel currentT;
@@ -37,25 +40,26 @@ public class View extends JFrame implements IView{
     JSplitPane end;
     
 	IModel model;
-	public View(IModel model)
+	IController controller;
+	
+	public View(IModel model, IController controller)
 	{
 		super();
 
 		this.model = model;
-
+		this.controller = controller;
+		
 		this.setTitle("Test");
 		this.setSize(500,700);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		this.draw();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		System.out.println(this.model.getText());
 		this.draw();
 	}
 	
@@ -68,8 +72,8 @@ public class View extends JFrame implements IView{
 	{
 		/***************************************/
 		
-	    consigneT = new TemperaturePanel("Consigne", true);
-	    currentT = new TemperaturePanel("Temperature canette", true);
+	    consigneT = new TemperaturePanel(this.model.GettempConsigne(), true);
+	    currentT = new TemperaturePanel(this.model.GettempCan(), true);
 	    stage1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, consigneT, currentT);
 	    stage1.setEnabled( false );
 	    stage1.setDividerLocation(240);
@@ -77,12 +81,9 @@ public class View extends JFrame implements IView{
 	    
 	    /*************************************/
 
-	    buttonP = new ConsigneChangePanel(false, true);
-	    buttonP.setBackground(new Color(0, 129, 172));
-	    buttonM = new ConsigneChangePanel(true, true);
-	    buttonM.setBackground(new Color(0, 129, 172));
-	    can = new CanPanel(true);
-	    can.setBackground(new Color(0, 129, 172));
+	    buttonP = new ConsigneChangePanel(this.model,this.controller, true);
+	    buttonM = new ConsigneChangePanel(this.model, this.controller, false);
+	    can = new CanPanel(this.model, this.controller);
 	    buttonsPM = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, buttonP, buttonM);
 	    buttonsPM.setEnabled( false );
 	    buttonsPM.setDividerLocation(120);
@@ -94,8 +95,8 @@ public class View extends JFrame implements IView{
 	    
 	    /*************************************/	    
 	    
-	    canT = new TemperaturePanel("Frigo", false);
-	    frigeT = new TemperaturePanel("Module Peltier", false);
+	    canT = new TemperaturePanel(this.model.GettempFridge(), false);
+	    frigeT = new TemperaturePanel(this.model.GettempModule(), false);
 	    stage3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, canT, frigeT);
 	    stage3.setEnabled( false );
 	    stage3.setDividerLocation(240);
@@ -103,11 +104,9 @@ public class View extends JFrame implements IView{
 	    
 	    /*************************************/
 
-	    sleep = new ModePanel("D:/Exia CESI/A3/Projet/Projet PMF/sleep", false);
-	    enable = new ModePanel("D:/Exia CESI/A3/Projet/Projet PMF/cold", true);
-	    enable.setBackground(new Color(0, 129, 172));
-	    disable = new ModePanel("D:/Exia CESI/A3/Projet/Projet PMF/off", false);
-	    disable.setBackground(new Color(0, 129, 172));
+	    sleep = new ModePanel(this.model, this.controller, 2);
+	    enable = new ModePanel(this.model, this.controller, 1);
+	    disable = new ModePanel(this.model, this.controller, 0);
 	    split1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sleep, enable);
 	    split1.setEnabled( false );
 	    split1.setDividerLocation(163);

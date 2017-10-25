@@ -1,10 +1,10 @@
 package Ordre;
 
 public abstract class Order {
-	public static int ORDRE_TYPE_CONSIGNE = 0;
-	public static int ORDRE_TYPE_VEILLE = 1;
+	public static int ORDRE_TYPE_VEILLE = 0;
+	public static int ORDRE_TYPE_CONSIGNE = 1;
 	
-	private static int tramesIndex[] = { 15, 0 };
+	private static int tramesIndex[] = { 6, 0 };
 	
 	public static int OrdreToSend(int trameValue[], int OrdreType)
 	{
