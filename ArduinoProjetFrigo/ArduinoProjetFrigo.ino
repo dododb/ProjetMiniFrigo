@@ -1,20 +1,19 @@
 #include "PID_v1.h"
 
-<<<<<<< HEAD
 int a = 0;
 
 String returnOrder;
 String returnOrderType;
 
-const int NUMBER_OF_TRAME = 2;
-const int TRAME_INDEX[] = { 6, 0 };
+const int NUMBER_OF_TRAMES = 2;
+const int NUMBER_OF_BITS = 7;
+const int TRAME_LENGTH[] = { 5, 2 };
 
 double Setpoint, Input, Output;
 PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
 
 void setup() {
-  Serial.begin(9600);
-  
+  Serial.begin(9600);  
   //Setpoint = 18;
   //myPID.SetMode(AUTOMATIC);
 }
@@ -24,133 +23,77 @@ int receiveTrames[2];
   if (Serial.available()) {
     a = Serial.read();
   }
+  
   getOrder(receiveTrames, a);
-  //Serial.println(a);
-  delay(1000);
+    delay(1000);
 
-  if(receiveTrames[0]==0){
-    returnOrderType = "OFF";
-    Send(returnOrderType);    
-  }
-    else {
-      returnOrderType = "ON";
-      Send(returnOrderType, receiveTrames[1],receiveTrames);
-    }
-  delay(1000);
+
+
+  switch(receiveTrames[1]){
+    case 0:
+      returnOrderType = "OFF";
+      Send(returnOrderType);
+      break;
+    case 1:
+      returnOrderType = "ON";      
+      Send(returnOrderType, receiveTrames[0]);
+      break;
+    case 2:
+      returnOrderType = "StandBy";
+      Send(returnOrderType);
+      break;
+    default:
+      returnOrderType = "ErrorOrder";
+      Send(returnOrderType);
+      break;
+  }  
+  delay(1000);  
 }
+
 //fonction d'envoie
 //fonction d'envoie ON
-void Send(String data1, int data2, int data3) {
+void Send(String data1, int data2) {
   Serial.print(data1);
-  switch(data2){
-    case 1: 
-      Serial.print(":Veille:");
-      StandBy();
-      break;
-      
-    case 2: 
-      Serial.print(":Consigne:");
-      Order(data3);
-      break;
-      
-    case 3: 
-      Serial.print(":Autre:");
-      break;
-      
-    default:
-      Serial.print(":Chiffre:");
-      Serial.println(data2);
-      break;
-  }
+  Serial.print(":Consigne:");  
+  Order(data2);  
 
 }
-//fonction d'envoie OFF
+//fonction d'envoie OFF/StandBy/ErrorOrder
 void Send(String data1){
-  Serial.println(data1);
+  if (data1 == "StandBy")StandBy();
+    else Serial.println(data1);
+  
+  
 }
 
 //Analyse de la trame ressus
 bool getOrder(int* trames, int trame)
 {
-    int ordreType = trame >> TRAME_INDEX[0];
-    trame -= ordreType << TRAME_INDEX[0];
-  
-    int ordre = trame >> TRAME_INDEX[2];
-  
-    trames[0] = ordreType;
-    trames[1] = ordre;
-    return true;
+  //Serial.print(trame);
+  int bitsRestant = NUMBER_OF_BITS;
+  for(int i = 0; i< NUMBER_OF_TRAMES; i++)
+  {
+    bitsRestant -= TRAME_LENGTH[i];
+    trames[i] = trame >> bitsRestant;
+    trame -= trames[i] << bitsRestant;
+  }
+  return true;
 }
 
 
 //mode
 //mode Ordre
-void Order(int data3){
-  Serial.print(data3);
-  return;
+void Order(int data2){
+  Serial.println(data2);  
 }
 
 //mode veille
 void StandBy(){
-  return;
+  Serial.print("ModeVielle"); 
 }
 
 
 // Fonction qui calcule le PID
-=======
-int pin = 13;
-int ledPin = 6;
-int a = 0;
-
-const int NUMBER_OF_TRAME = 2;
-const int TRAME_INDEX[] = { 6, 0 };
-
-double Setpoint, Input, Output;
-PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
-
-void setup() {
-  Serial.begin(9600);
-  pinMode(pin, INPUT);
-  //Setpoint = 18;
-  //myPID.SetMode(AUTOMATIC);
-  delay(10000);
-}
-
-void loop() {
-int receiveTrames[2];
-  if (Serial.available()) {
-    a = Serial.read();
-  }
-  getOrder(receiveTrames, a);
-  //Serial.println(a);
-  delay(1000);
-
-  Send(receiveTrames[0], receiveTrames[1], a);
-
-  delay(1000);
-}
-
-void Send(int data1, int data2, int data3) {
-  Serial.print(data1);
-  Serial.print(": caca");
-  Serial.print(data2);
-  Serial.print(":");
-  Serial.println(data3);
-}
-
-bool getOrder(int* trames, int trame)
-{
-    int ordreType = trame >> TRAME_INDEX[0];
-    trame -= ordreType << TRAME_INDEX[0];
-  
-    int ordre = trame >> TRAME_INDEX[2];
-  
-    trames[0] = ordreType;
-    trames[1] = ordre;
-    return true;
-}
-
->>>>>>> branch 'master' of https://github.com/dododb/ProjetMiniFrigo
 void funcPID()
 {
   Input = analogRead(1);
