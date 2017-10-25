@@ -21,7 +21,8 @@ void setup() {
 }
 
 void loop() {
-int receiveTrames[2];
+  Serial.println("50:25:20:22");
+/*int receiveTrames[2];
   if (Serial.available()) {
     a = Serial.read();
   }
@@ -37,7 +38,7 @@ int receiveTrames[2];
       returnOrderType = "ON";
       Send(returnOrderType, receiveTrames[1],receiveTrames[0]);
     }
-  delay(1000);
+  delay(1000);*/
 }
 //fonction d'envoie
 //fonction d'envoie ON

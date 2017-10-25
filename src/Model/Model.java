@@ -127,4 +127,22 @@ public class Model extends Observable implements IModel {
 		this.setChanged();
 		this.notifyObservers();
 	}
+	
+	@Override
+	public void TranslateDataFromArduino(String data)
+	{
+		/*private Temp tempConsigne;
+		private Temp tempCan;
+		private Temp tempFridge;
+		private Temp tempModule;*/
+		String[] arrayData = data.split(":"); 
+		if(arrayData.length == 4)
+		{
+			tempFridge.degree = Float.parseFloat(arrayData[1]);
+			tempModule.degree = Float.parseFloat(arrayData[2]);
+			tempCan.degree = Float.parseFloat(arrayData[3]);
+			this.setChanged();
+		}
+		else System.out.println("reception error");
+	}
 }

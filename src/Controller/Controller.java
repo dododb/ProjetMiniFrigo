@@ -36,7 +36,10 @@ public class Controller implements IController {
 			//System.out.println("envoie : " + Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
 			this.arduino.serialWrite(Order.OrdreToSend(o));
 			Thread.sleep(1000);
-			System.out.println(this.arduino.serialRead());
+			String reception = this.arduino.serialRead();
+			this.model.TranslateDataFromArduino(reception);
+			this.model.NotifyObserver();
+			System.out.println(reception);
 			//this.model.setText(this.arduino.serialRead());
 			//this.model.NotifyObserver();
 			//this.model.setText(this.arduino.serialRead());
@@ -56,25 +59,25 @@ public class Controller implements IController {
 
 	@Override
 	public void ClickCan() {
-		// TODO Auto-generated method stub
-		
+		this.model.SetCan();
 	}
 
 	@Override
 	public void PressChangeConsigne(Boolean more_less) {
-		// TODO Auto-generated method stub
-		
+		if(more_less) this.model.PressedIncrementConsigne();
+		else this.model.PressedDecrementConsigne();
 	}
 
 	@Override
 	public void ClickChangeConsigne(Boolean more_less) {
-		// TODO Auto-generated method stub
-		
+		if(!more_less) this.model.IncrementConsigne();
+		else this.model.DecrementConsigne();
+	}	
+	
+	@Override
+	public void ModeChange(int mode)
+	{
+		this.model.SetMode(mode);
 	}
 
-	@Override
-	public void ModeChange(int mode) {
-		// TODO Auto-generated method stub
-		
-	}	
 }

@@ -26,6 +26,7 @@ public interface IModel {
 	public void PressedIncrementConsigne();
 	public void PressedDecrementConsigne();
 
+	public void TranslateDataFromArduino(String data);
 	
 	public void SetCan();
 	public void SetMode(int mode);
