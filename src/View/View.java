@@ -49,7 +49,7 @@ public class View extends JFrame implements IView {
 		this.model = model;
 		this.controller = controller;
 		
-		this.setTitle("Test");
+		this.setTitle("Pimp My Fridge");
 		this.setSize(500,700);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
