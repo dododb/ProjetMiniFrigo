@@ -16,6 +16,7 @@ void setup() {
   
   //Setpoint = 18;
   //myPID.SetMode(AUTOMATIC);
+  delay(10000);
 }
 
 void loop() {
@@ -41,6 +42,7 @@ int receiveTrames[2];
 //fonction d'envoie ON
 void Send(String data1, int data2, int data3) {
   Serial.print(data1);
+<<<<<<< HEAD
   switch(data2){
     case 1: 
       Serial.print(":Veille:");
@@ -66,6 +68,12 @@ void Send(String data1, int data2, int data3) {
 //fonction d'envoie OFF
 void Send(String data1){
   Serial.println(data1);
+=======
+  Serial.print(": caca");
+  Serial.print(data2);
+  Serial.print(":");
+  Serial.println(data3);
+>>>>>>> branch 'CommunicationArduino' of https://github.com/dododb/ProjetMiniFrigo
 }
 
 //Analyse de la trame ressus
