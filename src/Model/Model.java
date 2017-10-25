@@ -136,11 +136,11 @@ public class Model extends Observable implements IModel {
 		private Temp tempFridge;
 		private Temp tempModule;*/
 		String[] arrayData = data.split(":"); 
-		if(arrayData.length == 4)
+		if(arrayData.length == 6)
 		{
-			tempFridge.degree = Float.parseFloat(arrayData[1]);
-			tempModule.degree = Float.parseFloat(arrayData[2]);
-			tempCan.degree = Float.parseFloat(arrayData[3]);
+			tempFridge.degree = Float.parseFloat(arrayData[3]);
+			tempModule.degree = Float.parseFloat(arrayData[4]);
+			tempCan.degree = Float.parseFloat(arrayData[5]);
 			this.setChanged();
 		}
 		else System.out.println("reception error");
