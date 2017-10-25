@@ -14,21 +14,22 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 
-public class TemperaturePanel  extends JPanel implements MouseListener{
+import Model.IModel;
+import Model.Temp;
+
+public class TemperaturePanel  extends JPanel {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	float temp = 25.0f;
-	String desc;
+	Temp temperature;
 	Boolean blue;
 	
-	public TemperaturePanel(String p_desc, Boolean p_blue)
+	public TemperaturePanel(Temp temperature, Boolean p_blue)
 	{
-		this.desc = p_desc;
+		this.temperature = temperature;
 		this.blue = p_blue;
-		addMouseListener(this);
 	}
 	
 
@@ -63,7 +64,7 @@ public class TemperaturePanel  extends JPanel implements MouseListener{
 		g.setColor(color1);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		 
-		String text2 = temp + "°C";
+		String text2 = this.temperature.GetDegree() + "°C";
 		
 		Font font1 = new Font("Roboto Light", Font.BOLD, fontS1);
 		Font font2 = new Font("Roboto Light", Font.BOLD, fontS2);
@@ -72,10 +73,10 @@ public class TemperaturePanel  extends JPanel implements MouseListener{
 	    g.setColor(color2);          
 	    Graphics2D g2d = (Graphics2D) g;
         FontMetrics fm = g2d.getFontMetrics();
-        Rectangle2D r = fm.getStringBounds(this.desc, g2d);
+        Rectangle2D r = fm.getStringBounds(this.temperature.GetTxt(), g2d);
         int x = (this.getWidth() - (int) r.getWidth()) / 2 ;
         int y = (this.getHeight() - (int) r.getHeight()) / 2 + fm.getAscent() + up;
-        g.drawString(this.desc, x, y);
+        g.drawString(this.temperature.GetTxt(), x, y);
           
         
 	    g.setFont(font2);
@@ -88,33 +89,4 @@ public class TemperaturePanel  extends JPanel implements MouseListener{
         
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }

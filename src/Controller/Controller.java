@@ -16,7 +16,7 @@ public class Controller implements IController {
 	{
 		//this.arduino = new Arduino2("", 9600);
 		this.model = new Model();
-		this.view = new View(model);
+		this.view = new View(model, this);
 		this.model.AddObserver(this.view);
 	}
 	
@@ -44,5 +44,24 @@ public class Controller implements IController {
 	public void SendDataToArduino()
 	{
 		
+	}
+
+	public void ClickCan() {
+		this.model.SetCan();
+	}
+
+	public void PressChangeConsigne(Boolean more_less) {
+		if(more_less) this.model.PressedIncrementConsigne();
+		else this.model.PressedDecrementConsigne();
+	}
+
+	public void ClickChangeConsigne(Boolean more_less) {
+		if(!more_less) this.model.IncrementConsigne();
+		else this.model.DecrementConsigne();
 	}	
+	
+	public void ModeChange(int mode)
+	{
+		this.model.SetMode(mode);
+	}
 }

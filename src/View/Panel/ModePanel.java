@@ -1,5 +1,6 @@
 package View.Panel;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
@@ -10,67 +11,51 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import Controller.IController;
+import Model.IModel;
+
 public class ModePanel extends JPanel implements MouseListener{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String pathFile;
-	private Image img1;
-	private Image img2;
-	private Boolean status;
+	private IModel model;
+	private IController controller;
+	int mode;
 	
-	public ModePanel(String p_pathFile, Boolean p_status)
+	public ModePanel(IModel model, IController controller, int mode)
 	{
-		this.status = p_status;
-        addMouseListener(this);
-
-		this.pathFile = p_pathFile;
-		try 
-		{
-			this.img1 = ImageIO.read(new File(this.pathFile + "1.png"));
-			this.img2 = ImageIO.read(new File(this.pathFile + "2.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		this.addMouseListener(this);
+        this.model = model;
+        this.controller = controller;
+        this.mode = mode;
 	}
 	
 
 	public void paintComponent(Graphics g){
-		if(this.status)	g.drawImage(this.img1, 0, 0, this.getWidth(), this.getHeight(), this);
-		else g.drawImage(this.img2, 0, 0, this.getWidth(), this.getHeight(), this);
-
+		g.drawImage(this.model.GetMode().GetImageMode(this.mode), 0, 0, this.getWidth(), this.getHeight(), this);
 	}
-	
+
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(this.pathFile);
+		this.controller.ModeChange(this.mode);
 	}
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
+
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
+
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	public void mouseEntered(MouseEvent e) {}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }
