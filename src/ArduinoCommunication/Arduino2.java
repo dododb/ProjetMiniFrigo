@@ -31,11 +31,12 @@ public class Arduino2 {
 		comPort.openPort();
 		while(comPort.getOutputStream() == null) 
 		{
+			
 			System.out.println(SerialPort.getCommPorts()[i]);
 			comPort = SerialPort.getCommPorts()[i++];
 			comPort.openPort();
-		}
-		
+			
+		}		
 		this.baud_rate = baud_rate;
 		comPort.setBaudRate(this.baud_rate);
 	}

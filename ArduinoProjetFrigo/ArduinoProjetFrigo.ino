@@ -1,8 +1,9 @@
 #include "PID_v1.h"
 
-int pin = 13;
-int ledPin = 6;
 int a = 0;
+
+String returnOrder;
+String returnOrderType;
 
 const int NUMBER_OF_TRAME = 2;
 const int TRAME_INDEX[] = { 6, 0 };
@@ -12,7 +13,7 @@ PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(pin, INPUT);
+  
   //Setpoint = 18;
   //myPID.SetMode(AUTOMATIC);
 }
@@ -26,19 +27,48 @@ int receiveTrames[2];
   //Serial.println(a);
   delay(1000);
 
-  Send(receiveTrames[0], receiveTrames[1], a);
-
+  if(receiveTrames[0]==0){
+    returnOrderType = "OFF";
+    Send(returnOrderType);    
+  }
+    else {
+      returnOrderType = "ON";
+      Send(returnOrderType, receiveTrames[1],receiveTrames);
+    }
   delay(1000);
 }
-
-void Send(int data1, int data2, int data3) {
+//fonction d'envoie
+//fonction d'envoie ON
+void Send(String data1, int data2, int data3) {
   Serial.print(data1);
-  Serial.print(":");
-  Serial.print(data2);
-  Serial.print(":");
-  Serial.println(data3);
+  switch(data2){
+    case 1: 
+      Serial.print(":Veille:");
+      StandBy();
+      break;
+      
+    case 2: 
+      Serial.print(":Consigne:");
+      Order(data3);
+      break;
+      
+    case 3: 
+      Serial.print(":Autre:");
+      break;
+      
+    default:
+      Serial.print(":Chiffre:");
+      Serial.println(data2);
+      break;
+  }
+
+}
+//fonction d'envoie OFF
+void Send(String data1){
+  Serial.println(data1);
 }
 
+//Analyse de la trame ressus
 bool getOrder(int* trames, int trame)
 {
     int ordreType = trame >> TRAME_INDEX[0];
@@ -51,6 +81,21 @@ bool getOrder(int* trames, int trame)
     return true;
 }
 
+
+//mode
+//mode Ordre
+void Order(int data3){
+  Serial.print(data3);
+  return;
+}
+
+//mode veille
+void StandBy(){
+  return;
+}
+
+
+// Fonction qui calcule le PID
 void funcPID()
 {
   Input = analogRead(1);
