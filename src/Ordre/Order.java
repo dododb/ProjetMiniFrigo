@@ -4,24 +4,18 @@ public abstract class Order {
 	public static int ORDRE_TYPE_VEILLE = 0;
 	public static int ORDRE_TYPE_CONSIGNE = 1;
 	
-	private static int tramesIndex[] = { 6, 0 };
+	private static int NombreBitEnvoie = 7;
+	private static int tramesLength[] = { 5, 2 };
 	
-	public static int OrdreToSend(int trameValue[], int OrdreType)
+	public static int OrdreToSend(int trameValue[])
 	{
-		int trameToSend = OrdreType<<getDecalage(0);
-		for(int i = 1; i<tramesIndex.length; i++)
+		int nbBitRestant = NombreBitEnvoie;
+		int trameToSend = 0;// = OrdreType<<getDecalage(0);
+		for(int i = 0; i<tramesLength.length; i++)
 		{
-			trameToSend += trameValue[i-1]<<getDecalage(i);
+			nbBitRestant -= tramesLength[i];
+			trameToSend += trameValue[i]<<nbBitRestant;
 		}
 		return trameToSend;
-	}
-	private static int getDecalage(int index)
-	{
-		int decal = 0;
-		for(int i = index; i<tramesIndex.length;i++)
-		{
-			decal += tramesIndex[i];
-		}
-		return decal;
 	}
 }
