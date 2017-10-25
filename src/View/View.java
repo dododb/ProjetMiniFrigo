@@ -2,11 +2,16 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -54,6 +59,14 @@ public class View extends JFrame implements IView {
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		try 
+		{
+			Image img = ImageIO.read(new File("Projet PMF/cold2.png"));
+			this.setIconImage(img);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.draw();
 	}
 
