@@ -12,8 +12,8 @@ public class ChangeConsigne {
 	{
 		this.moreStatus = true;
 		this.lessStatus = true;
-		this.more = new Pair("D:/Exia CESI/A3/Projet/Projet PMF/more");
-		this.less = new Pair("D:/Exia CESI/A3/Projet/Projet PMF/less");
+		this.more = new Pair("Projet PMF/more");
+		this.less = new Pair("Projet PMF/less");
 	}
 	
 	public Image GetImage(Boolean more_less)

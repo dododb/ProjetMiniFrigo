@@ -23,16 +23,9 @@ public class Controller implements IController {
 	
 	public void run() throws InterruptedException
 	{
-		for(int j = 1; j<4;j++)
-		for(int i = 0; i<20;i++)
+		while(true)
 		{
-			//this.model.setText(arduino.getReadedValue());
-			//int a = 1;
-			//a >>= 7;
-			//this.arduino.serialWrite((i*10));
-			int a = 1;
-			a >>= 7;
-			int[] o = { 7, 1 };
+			int[] o = { (int) this.model.GettempConsigne().GetDegreeF(), 1 };
 			//System.out.println("envoie : " + Order.OrdreToSend(o, Order.ORDRE_TYPE_CONSIGNE));
 			this.arduino.serialWrite(Order.OrdreToSend(o));
 			Thread.sleep(1000);
@@ -40,9 +33,6 @@ public class Controller implements IController {
 			this.model.TranslateDataFromArduino(reception);
 			this.model.NotifyObserver();
 			System.out.println(reception);
-			//this.model.setText(this.arduino.serialRead());
-			//this.model.NotifyObserver();
-			//this.model.setText(this.arduino.serialRead());
 			Thread.sleep(1000);
 		}
 	}

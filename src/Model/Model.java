@@ -97,12 +97,12 @@ public class Model extends Observable implements IModel {
 	}
 
 	public void IncrementConsigne() {
-		if(this.tempConsigne.GetDegreeF() < 50) this.tempConsigne.SetDegreeF(this.tempConsigne.GetDegreeF() + 1);
+		if(this.tempConsigne.GetDegreeF() < 30) this.tempConsigne.SetDegreeF(this.tempConsigne.GetDegreeF() + 1);
 		this.NotifyObserver();
 	}
 
 	public void DecrementConsigne() {
-		if(this.tempConsigne.GetDegreeF() > 0) this.tempConsigne.SetDegreeF(this.tempConsigne.GetDegreeF() - 1);
+		if(this.tempConsigne.GetDegreeF() > 15) this.tempConsigne.SetDegreeF(this.tempConsigne.GetDegreeF() - 1);
 		this.NotifyObserver();
 	}
 	

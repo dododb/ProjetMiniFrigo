@@ -19,7 +19,7 @@ public class Temp {
 	{
 		if(this.degree == -1) return "--.-";
 		else return Float.toString(this.degree);
-	}
+	}	
 	
 	public float GetDegreeF()
 	{

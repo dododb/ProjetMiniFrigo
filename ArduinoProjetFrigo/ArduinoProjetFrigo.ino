@@ -13,6 +13,7 @@ const int TRAME_LENGTH[] = { 5, 2 };
 double Setpoint, Input, Output;
 PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
 
+int TFidge[] = { 0, 0 };
 void setup() {
   Serial.begin(9600);
   
@@ -21,7 +22,14 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("50:25:20:22");
+  if (Serial.available()) {
+    a = Serial.read();
+  }
+  getOrder(TFidge, a);
+  Serial.print("0:ON:50:");
+  Serial.print(TFidge[0]);
+  Serial.println(":20:22");
+  delay(1000);
 /*int receiveTrames[2];
   if (Serial.available()) {
     a = Serial.read();

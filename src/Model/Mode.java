@@ -14,9 +14,9 @@ public class Mode {
 	
 	public Mode() {
 		this.activeMode = 0;
-		this.images.add(new Pair("D:/Exia CESI/A3/Projet/Projet PMF/off"));
-		this.images.add(new Pair("D:/Exia CESI/A3/Projet/Projet PMF/cold"));
-		this.images.add(new Pair("D:/Exia CESI/A3/Projet/Projet PMF/sleep"));
+		this.images.add(new Pair("Projet PMF/off"));
+		this.images.add(new Pair("Projet PMF/cold"));
+		this.images.add(new Pair("Projet PMF/sleep"));
 	}
 	
 	public Image GetImageMode(int mode)

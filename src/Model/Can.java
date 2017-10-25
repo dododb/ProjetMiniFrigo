@@ -9,7 +9,7 @@ public class Can {
 	public Can()
 	{
 		this.can = false;
-		this.images = new Pair("D:/Exia CESI/A3/Projet/Projet PMF/can");
+		this.images = new Pair("Projet PMF/can");
 	}
 	
 	public void SetCanB(Boolean can)
