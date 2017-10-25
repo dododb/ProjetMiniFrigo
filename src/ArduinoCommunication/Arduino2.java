@@ -26,8 +26,16 @@ public class Arduino2 {
 	public Arduino2(String portDescription, int baud_rate) {
 		//preferred constructor
 		this.portDescription = portDescription;
+		int i = 1;
 		comPort = SerialPort.getCommPorts()[0];
 		comPort.openPort();
+		while(comPort.getOutputStream() == null) 
+		{
+			System.out.println(SerialPort.getCommPorts()[i]);
+			comPort = SerialPort.getCommPorts()[i++];
+			comPort.openPort();
+		}
+		
 		this.baud_rate = baud_rate;
 		comPort.setBaudRate(this.baud_rate);
 	}
@@ -76,11 +84,13 @@ public class Arduino2 {
 		Scanner in = new Scanner(comPort.getInputStream());
 		try
 		{
-		   while(in.hasNext())
+			String a = "";
+		   if(in.hasNext())
 			   
-		      out += (in.next()+"\n");
+		     a = in.next();
 		   //System.out.print(out);
 		   	in.close();
+		   	return a;
 		} catch (Exception e) { e.printStackTrace(); }
 		return out;
 	}
