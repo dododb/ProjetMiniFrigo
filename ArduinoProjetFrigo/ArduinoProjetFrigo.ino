@@ -15,6 +15,7 @@ void setup() {
   pinMode(pin, INPUT);
   //Setpoint = 18;
   //myPID.SetMode(AUTOMATIC);
+  delay(10000);
 }
 
 void loop() {
@@ -33,7 +34,7 @@ int receiveTrames[2];
 
 void Send(int data1, int data2, int data3) {
   Serial.print(data1);
-  Serial.print(":");
+  Serial.print(": caca");
   Serial.print(data2);
   Serial.print(":");
   Serial.println(data3);
