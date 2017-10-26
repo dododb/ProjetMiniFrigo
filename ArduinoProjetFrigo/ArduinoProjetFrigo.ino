@@ -35,9 +35,9 @@ String returnOrderType;
 int a = 0;
 int receiveTrames[] = { 0, 0};
 
-const float PLAGE_TENSION = 5.0;
-const float TENSION = 5.0;
-const float Rref = 10000.0;
+const double PLAGE_TENSION = 5.0;
+const double TENSION = 5.0;
+const double Rref = 10000.0;
 double A_1 = 3.354016E-3;
 double B_1 = 2.569850E-4;
 double C_1 = 2.620131E-6;
@@ -144,8 +144,8 @@ void StandBy(){
 //Temperature  
  void Temp(){
   
-   pinTempCannetteValue = GetTempFromValue(analogRead(pinTempCannette));
-   pinTempPeltierValue = GetTempFromValue(analogRead(pinTempPeltier));   
+   pinTempCannetteValue = GetTemperature(pinTempCannette);
+   pinTempPeltierValue = GetTemperature(pinTempPeltier);   
    
    Serial.print(":");
    Serial.print(pinTempCannetteValue,2);
@@ -154,13 +154,20 @@ void StandBy(){
    //delay(1000);
 }
 
-//renvoie la temperature selon la mesure
-float GetTempFromValue(int temp)
+double GetTemperature(int port)
 {
-  float tension = temp * PLAGE_TENSION / 1024.0;
-  float R = tension * Rref / (TENSION - tension);
+  float reception;
+  float tension;
+  float resistance;
+  reception = analogRead(port);
+  tension = reception * PLAGE_TENSION / 1024;
+  resistance = (Rref * tension) / (TENSION-tension);
+  return SteinhartHart(resistance);
+}
 
-   //Division de l'équation en 4 parties. La premiere est 
+double SteinhartHart(double R)
+{
+  //Division de l'équation en 4 parties. La premiere est 
   //uniquement A1
   double equationB1 = B_1 * log(R/Rref);
   double equationC1 = C_1 * pow(log(R/Rref), 2);
@@ -168,6 +175,7 @@ float GetTempFromValue(int temp)
   double equation = A_1 + equationB1 + equationC1 + equationD1;
   return pow(equation, -1) - 273.15;
 }
+ 
 //Analyse de la trame ressus
 bool getOrder(int* trames, int trame)
 {  
