@@ -3,6 +3,8 @@ package Model;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JOptionPane;
+
 public class Model extends Observable implements IModel {
 	private Mode currentMode;
 	private Can can;
@@ -141,8 +143,30 @@ public class Model extends Observable implements IModel {
 			tempFridge.degree = Float.parseFloat(arrayData[3]);
 			tempModule.degree = Float.parseFloat(arrayData[4]);
 			tempCan.degree = Float.parseFloat(arrayData[5]);
+			if(point_Rosée(Float.parseFloat(arrayData[2]), tempFridge.degree) >= tempModule.degree) this.popUp();
 			this.setChanged();
 		}
 		else System.out.println("reception error");
+	}
+	
+	private double point_Rosée(double hygrometrie, double temp)
+	{
+		double a = 17.27;
+		double b = 237.7;
+		double Tr = b * alpha(hygrometrie, temp, a, b) / (a - alpha(hygrometrie, temp, a, b));
+		System.out.println(Tr);
+		return Tr;
+	}
+	
+	private double alpha(double RH, double T, double a, double b)
+	{
+		return (a * T) / (b + T) + Math.log( RH/100);
+	}
+	
+	private void popUp()
+	{
+		JOptionPane jop2 = new JOptionPane();
+
+		jop2.showMessageDialog(null, "Risque de condensation", "Attention", JOptionPane.WARNING_MESSAGE);
 	}
 }
