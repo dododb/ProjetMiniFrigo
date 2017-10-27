@@ -57,16 +57,16 @@ PID::PID(double* Input, double* Output, double* Setpoint,
 **********************************************************************************/
 bool PID::Compute()
 {
-	if (!inAuto) return false;
+	//if (!inAuto) return false;
 	unsigned long now = millis();
 	unsigned long timeChange = (now - lastTime);
-	if (timeChange >= SampleTime)
-	{
+	//if (timeChange >= SampleTime)
+	//{
 		/*Compute all the working error variables*/
-		double input = *myInput;
-		double error = *mySetpoint - input;
-		double dInput = (input - lastInput);
-		outputSum += (ki * error);
+		double input = *myInput; //27.25
+		double error = *mySetpoint - input; // 25 - 27.25
+		double dInput = (input - lastInput); // 25 - 0
+		outputSum += (ki * error); // 5 * -2.25
 
 		/*Add Proportional on Measurement, if P_ON_M is specified*/
 		if (!pOnE) outputSum -= kp * dInput;
@@ -76,22 +76,26 @@ bool PID::Compute()
 
 		/*Add Proportional on Error, if P_ON_E is specified*/
 		double output;
-		if (pOnE) output = kp * error;
-		else output = 0;
+		/*if (pOnE) */output = kp * error; // 20 * - 2.25
+		//else output = 0;
 
 		/*Compute Rest of PID Output*/
-		output += outputSum - kd * dInput;
-
+		output += outputSum - kd * dInput; // -11.25 - 20 * 25 + 4.5
+    
+    output = - output;
+    
 		if (output > outMax) output = outMax;
 		else if (output < outMin) output = outMin;
+    
+    
 		*myOutput = output;
 
 		/*Remember some variables for next time*/
 		lastInput = input;
 		lastTime = now;
 		return true;
-	}
-	else return false;
+	//}
+	//else return false;
 }
 
 /* SetTunings(...)*************************************************************

@@ -1,8 +1,8 @@
 #include "PID_v1.h"
 
 //variable DHC22
-int power = 99;
-int peltier_level = map(power, 0, 99, 0, 255); 
+//int power = 0;
+//int peltier_level = map(power, 0, 99, 0, 255); 
 const byte BROCHE_CAPTEUR = 5; 
 const byte DHT_SUCCESS = 0;        // Pas d'erreur
 const byte DHT_TIMEOUT_ERROR = 1;  // Temps d'attente d�pass�
@@ -29,7 +29,6 @@ int pinDHC22Value= 0;
 const int NUMBER_OF_TRAMES = 2;
 const int NUMBER_OF_BITS = 7;
 const int TRAME_LENGTH[] = { 5, 2 };
-double Setpoint, Input, Output;
 String returnOrder;
 String returnOrderType;
 int a = 0;
@@ -42,8 +41,13 @@ double A_1 = 3.354016E-3;
 double B_1 = 2.569850E-4;
 double C_1 = 2.620131E-6;
 double D_1 = 6.383091E-8;
+
 //Variable PID
-PID myPID(&Input, &Output, &Setpoint, 2, 5, 1, DIRECT);
+//setPoint = consigne
+//Input = temp mesurer
+//output = puissance retourné
+double Setpoint, Input, Output = 1;
+PID myPID(&Input, &Output, &Setpoint, 275, 5, 1, DIRECT);
 
 void setup() {
   Serial.begin(9600);  
@@ -53,16 +57,14 @@ void setup() {
   pinMode(pinDHC22,INPUT);
   pinMode(led,OUTPUT);
   
-  //myPID.SetMode(AUTOMATIC);
+  myPID.SetMode(AUTOMATIC);
 }
 
 void loop() {
 
-  
-
   DHC22(&humidity,&temperature);
 
-  peltier_level = map(power, 0, 99, 0, 255);
+  //peltier_level = map(power, 0, 99, 0, 255);
 
   //return;
    
@@ -85,23 +87,24 @@ void loop() {
       break;
     case 1:
       digitalWrite(led,HIGH);
-      analogWrite(pinCourantPeltier,peltier_level);
+      //analogWrite(pinCourantPeltier,peltier_level);
       returnOrderType = "ON";      
       Send(returnOrderType, receiveTrames[0]);
+      //power=99;
       break;
     case 2:
       digitalWrite(led,LOW);
       delay(500);
       digitalWrite(led,HIGH);
       returnOrderType = "StandBy";      
-      Send(returnOrderType);
+      Send(returnOrderType);      
       break;
     default:
       returnOrderType = "ErrorOrder:";
       Send(returnOrderType);
       break;
     }  
-   //delay(1000);  
+   
    SendInfo(humidity,temperature);
    Temp();
 }
@@ -112,6 +115,8 @@ void Send(String data1, int data2) {
   Serial.print(data1);
   Serial.print(":");  
   Order(data2);
+  
+  //peltier_level = map(power, 0, 99, 0, 255);
 }
 
 //fonction d'envoie OFF/StandBy/ErrorOrder
@@ -131,14 +136,23 @@ void SendInfo(float humidity, float temperature){
 }
 
 //mode
-//mode Ordre
+//mode Ordre/PID
 void Order(int data2){
-  Serial.print(data2);  
+  Input = pinTempCannetteValue;
+  Setpoint = data2;
+  myPID.Compute();
+  
+  
+  Serial.print(Output);Serial.print("");
+  analogWrite(pinCourantPeltier,(int)Output);  
+  //Serial.print(data2);  
 }
 
 //mode veille
 void StandBy(){
-  Serial.print("StandBy"); 
+  analogWrite(3, 33.0 / 100.0 * 255); 
+  Serial.print("StandBy:-1");
+  
 }
 
 //Temperature  
@@ -151,7 +165,7 @@ void StandBy(){
    Serial.print(pinTempCannetteValue,2);
    Serial.print(":");
    Serial.println(pinTempPeltierValue,2);   
-   //delay(1000);
+   
 }
 
 double GetTemperature(int port)
@@ -189,30 +203,20 @@ bool getOrder(int* trames, int trame)
   return true;
 }
 
-// Fonction qui calcule le PID
-void funcPID()
-{
-  Input = analogRead(1);
-  Input = (5*Input*100/1024);
-  myPID.Compute();
-  analogWrite(3,Output);
-  Serial.print(Input); Serial.println(Output);
-}
-
 //DHC Init
 void DHC22(float* humidity, float* temperature){
   char option; 
  
   readDHT22(BROCHE_CAPTEUR, temperature, humidity);
-  delay(1000);
+  
   
   if(Serial.available() > 0)
   {
-    option = Serial.read();
-    if(option == 'a') power += 5;
-      else if(option == 'z') power -= 5;
-    if(power > 99) power = 99;
-    if(power < 0) power = 0;
+    //option = Serial.read();
+    //if(option == 'a') power += 5;
+      //else if(option == 'z') power -= 5;
+    //if(power > 99) power = 99;
+    //if(power < 0) power = 0;
     
     //peltier_level = map(power, 0, 99, 0, 255);
   }
