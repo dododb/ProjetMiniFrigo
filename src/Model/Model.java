@@ -15,6 +15,7 @@ public class Model extends Observable implements IModel {
 	private Temp tempFridge;
 	private Temp tempModule;
 	
+	boolean risqueCondensation = false;
 	public Model()
 	{
 		this.currentMode = new Mode();
@@ -143,7 +144,12 @@ public class Model extends Observable implements IModel {
 			tempFridge.degree = Float.parseFloat(arrayData[3]);
 			tempModule.degree = Float.parseFloat(arrayData[4]);
 			tempCan.degree = Float.parseFloat(arrayData[5]);
-			if(point_Rosée(Float.parseFloat(arrayData[2]), tempFridge.degree) >= tempModule.degree) this.popUp();
+			if(point_Rosée(Float.parseFloat(arrayData[2]), tempFridge.degree) >= tempModule.degree)
+			{
+				if(!risqueCondensation) this.popUp();
+				risqueCondensation = true;
+			}
+			else risqueCondensation = false;
 			this.setChanged();
 		}
 		else System.out.println("reception error");
@@ -154,7 +160,7 @@ public class Model extends Observable implements IModel {
 		double a = 17.27;
 		double b = 237.7;
 		double Tr = b * alpha(hygrometrie, temp, a, b) / (a - alpha(hygrometrie, temp, a, b));
-		System.out.println(Tr);
+		//System.out.println(Tr);
 		return Tr;
 	}
 	
