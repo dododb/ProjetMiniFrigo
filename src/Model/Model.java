@@ -14,6 +14,7 @@ public class Model extends Observable implements IModel {
 	private Temp tempCan;
 	private Temp tempFridge;
 	private Temp tempModule;
+	private Temp tempFridgeLast;
 	
 	boolean risqueCondensation = false;
 	public Model()
@@ -26,6 +27,7 @@ public class Model extends Observable implements IModel {
 		this.tempCan = new Temp("Temperature canette", -1);
 		this.tempFridge = new Temp("Frigo", -1);
 		this.tempModule = new Temp("Module Peltier", -1);
+		this.tempFridgeLast = new Temp("Module Peltier", -1);;
 	}
 
 	public Mode GetMode()
@@ -146,10 +148,17 @@ public class Model extends Observable implements IModel {
 			tempCan.degree = Float.parseFloat(arrayData[5]);
 			if(point_Rosée(Float.parseFloat(arrayData[2]), tempFridge.degree) >= tempModule.degree)
 			{
-				if(!risqueCondensation) this.popUp();
+				if(!risqueCondensation) this.popUp("Risque de condensation");
 				risqueCondensation = true;
 			}
 			else risqueCondensation = false;
+			
+			System.out.println(tempFridge.degree - this.tempFridgeLast.degree + " : " + tempFridge.degree + " " + this.tempFridgeLast.degree );
+			if((tempFridge.degree - this.tempFridgeLast.degree) >= 0.4 && tempFridge.degree > 0)
+			{
+				this.popUp("Variation anormale de temperature detectée");
+			}
+			tempFridgeLast.degree = tempFridge.degree;
 			this.setChanged();
 		}
 		else System.out.println("reception error");
@@ -169,10 +178,10 @@ public class Model extends Observable implements IModel {
 		return (a * T) / (b + T) + Math.log( RH/100);
 	}
 	
-	private void popUp()
+	private void popUp(String message)
 	{
 		JOptionPane jop2 = new JOptionPane();
 
-		jop2.showMessageDialog(null, "Risque de condensation", "Attention", JOptionPane.WARNING_MESSAGE);
+		jop2.showMessageDialog(null, message, "Attention", JOptionPane.WARNING_MESSAGE);
 	}
 }

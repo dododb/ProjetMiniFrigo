@@ -138,7 +138,7 @@ void SendInfo(float humidity, float temperature){
 //mode
 //mode Ordre/PID
 void Order(int data2){
-  Input = pinTempCannetteValue;
+  Input = pinTempPeltierValue;
   Setpoint = data2;
   myPID.Compute();
   
